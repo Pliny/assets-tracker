@@ -12,6 +12,7 @@ group :assets do
   gem 'bootstrap-sass', '~> 3.0.2.1'
   gem 'sass-rails',   '~> 4.0.0'
   gem 'coffee-rails', '~> 4.0.1'
+  gem 'sprockets-rails'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platforms => :ruby
@@ -20,19 +21,12 @@ group :assets do
 end
 
 group :development, :test do
-  gem "guard", "~> 2.2.4"
-  gem 'rb-fsevent', '~> 0.9.2'
   gem 'capybara'
-end
-
-group :development do
-  gem 'guard-livereload'
-  gem 'rack-livereload'
+  gem 'listen'
+  gem 'spring'
 end
 
 group :test do
-  gem "spork", '1.0.0rc4'
-  gem 'guard-spork'
   gem 'vcr'
   gem 'fakeweb'
   gem 'timecop'
