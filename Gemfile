@@ -10,7 +10,7 @@ gem 'json'
 
 # Gems used only for assets and not required
 # in production environments by default.
-group :assets do
+group :assets, :development, :test do
   gem 'bootstrap-sass', '~> 3.0.2.1'
   gem 'sass-rails',   '~> 4.0.0'
   gem 'coffee-rails', '~> 4.0.1'
