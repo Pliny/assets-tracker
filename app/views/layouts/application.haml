@@ -12,7 +12,7 @@
     .navbar.navbar-inverse.navbar-fixed-top{ :role => :navigation }
       .container
         .navbar-header
-          = button_tag(type: :button, class: 'navbar-toggle', 'data-toggle' => 'collapse', 'data-target' => '.navbar-collapse') do
+          = button_tag(type: :button, class: 'navbar-toggle', :data => { :toggle => 'collapse', :target => '.navbar-collapse' } ) do
             %span.sr-only= "Toggle Navigation"
             %span.icon-bar
             %span.icon-bar
