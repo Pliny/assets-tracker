@@ -20,7 +20,10 @@ group :assets, :development, :test do
   # gem 'therubyracer', :platforms => :ruby
 
   gem 'uglifier', '>= 1.3.0'
+  gem 'yui-compressor'
 end
+gem 'asset_sync'
+gem 'unf'
 
 group :development, :test do
   gem 'capybara'
