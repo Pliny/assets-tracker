@@ -14,6 +14,11 @@ describe "Static Views" do
       find('.navbar-header a.navbar-brand').should have_content("Asset Tracker")
     end
 
+    describe "anonymous user" do
+
+      it { should have_selector('body > .container > .google-signin')}
+    end
+
     # describe "and javascript enabled", js: true do
     #   self.use_transactional_fixtures = false
     #

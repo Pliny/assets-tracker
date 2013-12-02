@@ -3,3 +3,21 @@
 body {
   padding-top: 50px;
 }
+
+.content {
+  padding: 40px 15px;
+}
+
+.google-signin {
+  background: image-url('Red-signin-Long-base-32dp.png') no-repeat center center;
+  height: 42px;
+  width: 197px;
+}
+
+.google-signin:hover {
+  background: image-url('Red-signin-Long-hover-32dp.png') no-repeat center center;
+}
+
+.google-signin:active {
+  background: image-url('Red-signin-Long-press-32dp.png') no-repeat center center;
+}
