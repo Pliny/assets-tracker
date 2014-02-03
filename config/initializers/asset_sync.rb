@@ -3,7 +3,6 @@ AssetSync.configure do |config|
   config.aws_access_key_id = ENV['AWS_ACCESS_KEY_ID']
   config.aws_secret_access_key = ENV['AWS_SECRET_ACCESS_KEY']
   config.fog_directory = "assets-tracker" # ENV['FOG_DIRECTORY']
-  config.fog_provider = 'AWS'
 
   # To use AWS reduced redundancy storage.
   # config.aws_reduced_redundancy = true
