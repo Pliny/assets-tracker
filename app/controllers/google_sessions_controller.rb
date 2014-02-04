@@ -17,7 +17,7 @@ class GoogleSessionsController < ApplicationController
 
     sign_in user
 
-    redirect_to request.env['omniauth.origin'] || root_url
+    redirect_to  root_url || request.env['omniauth.origin']
   end
 
   def error

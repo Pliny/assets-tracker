@@ -19,13 +19,7 @@ describe "login from web" do
 
     before { setup_google_omniauth }
 
-    it "should be redirect back or home" do
-      get "/auth/google_oauth2", {}, "HTTP_REFERER" => "http://test.host/referrer"
-      response.should be_redirect
-      follow_redirect!
-      response.should be_redirect
-      response.should redirect_to("http://test.host/referrer")
-
+    it "should be redirect back to home" do
       get "/auth/google_oauth2"
       response.should be_redirect
       follow_redirect!
