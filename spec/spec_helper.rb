@@ -60,19 +60,19 @@ def login(user = FactoryGirl.create(:user))
   user
 end
 
-def setup_google_omniauth
+def setup_google_omniauth(data={})
   OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new(
     {
       'uid'  => '12345',
       'info' => {
-        'first_name' => 'Fixture First Name',
-        'last_name'  => 'Fixture Last Name',
-        'email'      => 'dude@example.com',
-        'image'      => 'https://fixture/google/profile/image/url.gif'
+        'first_name' => data[:first_name] || 'Fixture First Name',
+        'last_name'  => data[:last_name]  || 'Fixture Last Name',
+        'email'      => data[:email]      || 'dude@example.com',
+        'image'      => data[:image]      || 'https://fixture/google/profile/image/url.gif'
       },
       'extra' => {
         'raw_info' => {
-          'hd' => 'example.com'
+          'hd' => data[:hd] || 'example.com'
         }
       },
       'credentials' => {
@@ -82,8 +82,8 @@ def setup_google_omniauth
   )
 end
 
-def integration_login
-  setup_google_omniauth
+def integration_login data={}
+  setup_google_omniauth(data)
   visit '/auth/google_oauth2'
 end
 

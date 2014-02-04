@@ -7,6 +7,10 @@ class User < ActiveRecord::Base
 
   before_save :create_remember_token
 
+  def full_name
+    "#{first_name} #{last_name}".titleize
+  end
+
   private
 
   def create_remember_token

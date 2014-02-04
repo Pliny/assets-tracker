@@ -43,4 +43,17 @@ describe User do
     before { @user.save }
     its(:remember_token) { should_not be_blank }
   end
+
+  describe "full_name" do
+
+    it "should return first and last name" do
+      user = FactoryGirl.create(:user, first_name: "Dave", last_name: "Docomotion", email: 'hi@example.com')
+      user.full_name.should == "Dave Docomotion"
+    end
+
+    it "should titleize the name" do
+      user = FactoryGirl.create(:user, first_name: "dave", last_name: "docomotion", email: 'hi@example.com')
+      user.full_name.should == "Dave Docomotion"
+    end
+  end
 end

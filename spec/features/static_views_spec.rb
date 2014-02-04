@@ -49,12 +49,16 @@ describe "Static Views" do
     describe "when logged in" do
 
       before do
-        integration_login
+        integration_login(first_name: "dude", last_name: "Mctalis", email: "dude@example.com")
         visit root_path
       end
 
       it "should have a signout link" do
-        find(".navbar-nav > li > a[href=\"#{signout_path}\"]").should have_content("Log Out")
+        find(".navbar-nav li > a[href=\"#{signout_path}\"]").should have_content("Logout")
+      end
+
+      it "should have the current user's full name" do
+        find(".navbar-nav > li.dropdown > a").should have_content("Dude Mctalis")
       end
     end
 
@@ -63,7 +67,7 @@ describe "Static Views" do
       before { visit root_path }
 
       it "should have a signin link" do
-        find(".navbar-nav > li > a[href=\"#{signin_path}\"]").should have_content("Log In")
+        find(".navbar-nav > li > a[href=\"#{signin_path}\"]").should have_content("Log in")
       end
     end
   end
