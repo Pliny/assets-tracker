@@ -39,4 +39,47 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = "random"
+
+  config.extend VCR::RSpec::Macros
 end
+
+OmniAuth.config.test_mode = true
+
+VCR.configure do |c|
+  c.cassette_library_dir = 'spec/fixtures/vcr_cassettes'
+  c.hook_into :webmock
+  c.ignore_localhost = true
+end
+
+def login(user = FactoryGirl.create(:user))
+  controller.sign_in(user)
+  user
+end
+
+def setup_google_omniauth
+  OmniAuth.config.mock_auth[:google_oauth2] = OmniAuth::AuthHash.new(
+    {
+      'uid'  => '12345',
+      'info' => {
+        'first_name' => 'Fixture First Name',
+        'last_name'  => 'Fixture Last Name',
+        'email'      => 'dude@example.com',
+        'image'      => 'https://fixture/google/profile/image/url.gif'
+      },
+      'extra' => {
+        'raw_info' => {
+          'hd' => 'example.com'
+        }
+      },
+      'credentials' => {
+        'token' => 'VALID_TOKEN'
+      }
+    }
+  )
+end
+
+def integration_login
+  setup_google_omniauth
+  visit '/auth/google_oauth2'
+end
+

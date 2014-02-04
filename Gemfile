@@ -36,7 +36,7 @@ gem 'rails_12factor', group: :production
 
 group :test do
   gem 'vcr'
-  gem 'fakeweb'
+  gem 'webmock', "~>1.15.2"
   gem 'timecop'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
@@ -45,6 +45,7 @@ end
 gem 'jquery-rails'
 gem 'rspec-rails'
 gem 'haml'
+gem "omniauth-google-oauth2", "~> 0.2.2"
 
 # Turbolinks makes following links in your web application faster. Read more: https://github.com/rails/turbolinks
 gem 'turbolinks'

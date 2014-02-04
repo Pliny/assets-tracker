@@ -1,7 +1,12 @@
 AssetTracker::Application.routes.draw do
   root 'assets#index'
 
-  get '/signin',  to: 'sessions#new'
+  get '/signin',  to: 'sessions#new', as: 'signin'
+
+  get "/auth/google_oauth2/callback" => "google_sessions#login"
+  get "/auth/failure" => "google_sessions#error"
+
+
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
