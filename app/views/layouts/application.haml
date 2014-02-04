@@ -21,7 +21,7 @@
         .navbar-collapse.collapse{ style: "height: 1px;" }
           %ul.nav.navbar-nav
             %li.active
-              = link_to 'Home', '#'
+              = link_to 'Home', root_path
             %li
               = link_to 'About', '#'
           %us.nav.navbar-nav.navbar-right
@@ -37,6 +37,6 @@
     .container.content
       - flash.each do |key, value|
         .alert-dismissable{ class: flash_class(key) }
-          = button_tag "&times;".html_safe, type: :button, class: :close, :'aria-hidden' => :true, data: { dismiss: :alert }
+          = button_tag content_tag(:span, '', class: "glyphicon glyphicon-remove-circle"), type: :button, class: :close, :'aria-hidden' => :true, data: { dismiss: :alert }
           = value
       = yield
