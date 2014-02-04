@@ -1,7 +1,8 @@
 AssetTracker::Application.routes.draw do
   root 'assets#index'
 
-  get '/signin',  to: 'sessions#new', as: 'signin'
+  get    '/signin',  to: 'sessions#new',     as: 'signin'
+  delete '/signout', to: 'sessions#destroy', as: 'signout'
 
   get "/auth/google_oauth2/callback" => "google_sessions#login"
   get "/auth/failure" => "google_sessions#error"

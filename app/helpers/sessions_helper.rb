@@ -33,8 +33,8 @@ module SessionsHelper
     redirect_to signin_path, notice: "Please sign in to access this page."
   end
 
-  # def sign_out
-  #   current_user = nil
-  #   cookies.delete(:remember_token)
-  # end
+  def sign_out
+    current_user = nil
+    cookies.delete(:remember_token)
+  end
 end

@@ -41,5 +41,32 @@ describe "Static Views" do
     #   end
     # end
   end
+
+  describe "User sessions" do
+
+    subject { page.body }
+
+    describe "when logged in" do
+
+      before do
+        integration_login
+        visit root_path
+      end
+
+      it "should have a signout link" do
+        find(".navbar-nav > li > a[href=\"#{signout_path}\"]").should have_content("Log Out")
+      end
+    end
+
+    describe "when not logged in" do
+
+      before { visit root_path }
+
+      it "should have a signin link" do
+        find(".navbar-nav > li > a[href=\"#{signin_path}\"]").should have_content("Log In")
+      end
+    end
+  end
+
 end
 

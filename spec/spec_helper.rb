@@ -39,8 +39,10 @@ RSpec.configure do |config|
   # the seed, which is printed after each run.
   #     --seed 1234
   config.order = "random"
+end
 
-  config.extend VCR::RSpec::Macros
+Capybara.configure do |config|
+  config.javascript_driver = :webkit
 end
 
 OmniAuth.config.test_mode = true

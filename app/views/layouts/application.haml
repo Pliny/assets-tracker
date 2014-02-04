@@ -25,7 +25,10 @@
             %li
               = link_to 'About', '#'
             %li
-              = link_to 'Log Out', '#'
+              - if signed_in?
+                = link_to 'Log Out', signout_path, method: :delete
+              - else
+                = link_to 'Log In', signin_path
     .container.content
       - flash.each do |key, value|
         = content_tag(:div, value, class: "alert alert-#{key}")

@@ -2,8 +2,6 @@ require 'spec_helper'
 
 describe "login from web" do
 
-  use_vcr_cassette "google", record: :once
-
   def auth_via_google
     get "/auth/google_oauth2"
     response.should be_redirect
