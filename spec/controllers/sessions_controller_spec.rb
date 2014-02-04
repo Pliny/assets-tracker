@@ -19,7 +19,7 @@ describe SessionsController do
     it "should sign out the user" do
       subject.should_receive(:sign_out).once
       delete :destroy
-      response.should redirect_to root_path
+      response.should redirect_to signin_path
     end
   end
 end

@@ -41,6 +41,8 @@ RSpec.configure do |config|
   config.order = "random"
 end
 
+ENV['EMAIL_SERVER'] = 'example.com'
+
 Capybara.configure do |config|
   config.javascript_driver = :webkit
 end

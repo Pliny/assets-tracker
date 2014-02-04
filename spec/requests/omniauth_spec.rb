@@ -27,25 +27,51 @@ describe "login from web" do
 
     context "when the Google user has never logged in before" do
 
-      it "should create a google user" do
-        expect { auth_via_google }.to change(User, :count).by 1
+      context "and is allowed to log in" do
+
+        it "should create a google user" do
+          expect { auth_via_google }.to change(User, :count).by 1
+        end
+
+        it "should log in a new user" do
+          auth_via_google
+          assigns(:current_user).google_id.should == "12345"
+        end
+
+        it "should store the Google username with the current user" do
+          auth_via_google
+
+          assigns(:current_user).first_name.should == "Fixture First Name"
+          assigns(:current_user).last_name.should == "Fixture Last Name"
+        end
+
+        it "should store the Google photo url with the current user" do
+          auth_via_google
+          assigns(:current_user).google_image_url.should == "https://fixture/google/profile/image/url.gif"
+        end
       end
 
-      it "should log in a new user" do
-        auth_via_google
-        assigns(:current_user).google_id.should == "12345"
-      end
+      context "and is not allowed to log in" do
 
-      it "should store the Google username with the current user" do
-        auth_via_google
+        before do
+          ENV['EMAIL_SERVER'] = "badexample.com"
+        end
 
-        assigns(:current_user).first_name.should == "Fixture First Name"
-        assigns(:current_user).last_name.should == "Fixture Last Name"
-      end
+        after do
+          ENV['EMAIL_SERVER'] = "example.com"
+        end
 
-      it "should store the Google photo url with the current user" do
-        auth_via_google
-        assigns(:current_user).google_image_url.should == "https://fixture/google/profile/image/url.gif"
+        it "should not create a google user" do
+          expect { auth_via_google }.to change(User, :count).by 0
+        end
+
+        it "should flash a notice to the unauthorized user" do
+          auth_via_google
+          response.should redirect_to('http://www.example.com/signin')
+          follow_redirect!
+
+          Nokogiri::HTML(response.body).css('.alert-danger').inner_html.strip.should == "Sorry, you must be part of this group to create an account"
+        end
       end
     end
 
@@ -72,7 +98,7 @@ describe "login from web" do
       response.should redirect_to('http://www.example.com/signin')
       follow_redirect!
 
-      Nokogiri::HTML(response.body).css('.alert-error').inner_html.strip.should == "Sorry, something went wrong with the login."
+      Nokogiri::HTML(response.body).css('.alert-danger').inner_html.strip.should == "Sorry, something went wrong with the login."
     end
   end
 end

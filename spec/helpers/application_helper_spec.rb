@@ -32,7 +32,7 @@ describe ApplicationHelper do
     end
 
     it "should convert :error to bootstrap friendly class" do
-      flash_class(:error).should == "alert alert-error"
+      flash_class(:error).should == "alert alert-danger"
     end
   end
 end
