@@ -70,7 +70,7 @@ describe "login from web" do
           response.should redirect_to('http://www.example.com/signin')
           follow_redirect!
 
-          Nokogiri::HTML(response.body).css('.alert-danger').inner_html.strip.should == "Sorry, you must be part of this group to create an account"
+          Nokogiri::HTML(response.body).css('.alert-danger').inner_html.strip.should =~ /Sorry, you must be part of this group to create an account/
         end
       end
     end
@@ -98,7 +98,7 @@ describe "login from web" do
       response.should redirect_to('http://www.example.com/signin')
       follow_redirect!
 
-      Nokogiri::HTML(response.body).css('.alert-danger').inner_html.strip.should == "Sorry, something went wrong with the login."
+      Nokogiri::HTML(response.body).css('.alert-danger').inner_html.strip.should =~ /Sorry, something went wrong with the login\./
     end
   end
 end

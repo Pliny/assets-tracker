@@ -36,5 +36,7 @@
                 = link_to "Log in using your #{ENV['EMAIL_SERVER'].split('.')[0].titleize} account", signin_path
     .container.content
       - flash.each do |key, value|
-        = content_tag(:div, value, class: "#{flash_class(key)}")
+        .alert-dismissable{ class: flash_class(key) }
+          = button_tag "&times;".html_safe, type: :button, class: :close, :'aria-hidden' => :true, data: { dismiss: :alert }
+          = value
       = yield
