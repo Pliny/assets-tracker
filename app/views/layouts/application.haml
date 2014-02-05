@@ -20,11 +20,16 @@
           = link_to 'Asset Tracker', root_path, class: 'navbar-brand'
         .navbar-collapse.collapse{ style: "height: 1px;" }
           %ul.nav.navbar-nav
-            %li.active
-              = link_to 'Home', root_path
-            %li
+            %li#nav-about
               = link_to 'About', '#'
-          %us.nav.navbar-nav.navbar-right
+            - if signed_in?
+              %li#nav-tools.active
+                %a{href: '#', :'data-toggle' => "dropdown", class: "dropdown-toggle" }
+                  = "Tools"
+                  %b.caret
+                %ul.dropdown-menu.dropdown-menu-left
+                  %li= link_to 'Import Spreadsheet', spreadsheets_path, id: 'nav-import-spreadsheet'
+          %ul.nav.navbar-nav.navbar-right
             %li.dropdown
               - if signed_in?
                 %a{href: '#', :'data-toggle' => "dropdown", class: "dropdown-toggle" }

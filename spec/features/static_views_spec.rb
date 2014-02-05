@@ -4,7 +4,7 @@ describe "Static Views" do
 
   subject { page.body }
 
-  describe "index" do
+  describe "common elements" do
 
     before { visit root_path }
 
@@ -18,33 +18,9 @@ describe "Static Views" do
 
       it { should have_selector('body > .container > .google-signin')}
     end
-
-    # describe "and javascript enabled", js: true do
-    #   self.use_transactional_fixtures = false
-    #
-    #   # Wait for page to fully load
-    #   before { find(".admin-form") }
-
-    #   after do
-    #     # Do not delete data in schema table
-    #     ActiveRecord::Base.connection.tables.each do |table|
-    #       model_name = table.camelize.singularize
-    #       if model_name != "SchemaMigration"
-    #         model_name.constantize.delete_all
-    #       end
-    #     end
-    #   end
-
-    #   it "should work with capybara-webkit" do
-    #     click_button "SKIP"
-    #     find('.page+.page')
-    #   end
-    # end
   end
 
   describe "User sessions" do
-
-    subject { page.body }
 
     describe "when logged in" do
 
@@ -60,6 +36,10 @@ describe "Static Views" do
       it "should have the current user's full name" do
         find(".navbar-nav > li.dropdown > a").should have_content("Dude Mctalis")
       end
+
+      it "should show the 'Tools' option" do
+        find(".navbar-nav:first > li > a.dropdown-toggle").should have_content("Tools")
+      end
     end
 
     describe "when not logged in" do
@@ -69,8 +49,20 @@ describe "Static Views" do
       it "should have a signin link" do
         find(".navbar-nav > li > a[href=\"#{signin_path}\"]").should have_content("Log in")
       end
+
+      it "should not show the 'Tools' option" do
+        page.should have_no_selector(:css, ".navbar-nav:first > li > a.dropdown-toggle")
+      end
     end
   end
 
+  describe "importing" do
+
+    before do
+      visit spreadsheets_path
+    end
+
+    it { should be }
+  end
 end
 
