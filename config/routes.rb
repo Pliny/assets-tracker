@@ -7,6 +7,10 @@ AssetTracker::Application.routes.draw do
   get "/auth/google_oauth2/callback" => "google_sessions#login"
   get "/auth/failure" => "google_sessions#error"
 
+  resources :spreadsheets do
+    collection { post :import }
+  end
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

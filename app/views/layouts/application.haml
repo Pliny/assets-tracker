@@ -23,7 +23,7 @@
             %li#nav-about
               = link_to 'About', '#'
             - if signed_in?
-              %li#nav-tools.active
+              %li#nav-tools{ class: ("active" if @tool_active) }
                 %a{href: '#', :'data-toggle' => "dropdown", class: "dropdown-toggle" }
                   = "Tools"
                   %b.caret
