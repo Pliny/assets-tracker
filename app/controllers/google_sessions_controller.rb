@@ -5,7 +5,9 @@ class GoogleSessionsController < ApplicationController
 
     if auth.info['email'].split('@')[1] == ENV['EMAIL_SERVER']
 
-      user = User.find_by_email(auth.info['email']) || User.new
+      user = User.find_by_email(auth.info['email']) ||
+        User.find_by_full_name("#{auth.info['first_name'].strip.titleize} #{auth.info['last_name'].strip.titleize}") ||
+        User.new
 
       user.google_id    = auth['uid']
       user.email        = auth.info['email']

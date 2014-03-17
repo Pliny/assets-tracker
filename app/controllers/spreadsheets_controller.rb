@@ -5,6 +5,10 @@ class SpreadsheetsController < ApplicationController
   end
 
   def import
-
+    if Asset.import(params['spreadsheet-file']) == true
+      redirect_to root_path
+    else
+      head :bad_request
+    end
   end
 end

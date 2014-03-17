@@ -29,6 +29,15 @@ describe "login from web" do
 
       context "and is allowed to log in" do
 
+        context "but has a temporary email" do
+
+          it "should update the email" do
+            user = FactoryGirl.create(:user, email: "asdf@#{ENV['EMAIL_SERVER']}", first_name: 'Fixture First Name', last_name: 'Fixture Last Name')
+            auth_via_google
+            user.reload.email.should == "dude@example.com"
+          end
+        end
+
         it "should create a google user" do
           expect { auth_via_google }.to change(User, :count).by 1
         end

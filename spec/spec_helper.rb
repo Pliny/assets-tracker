@@ -42,6 +42,7 @@ RSpec.configure do |config|
 end
 
 ENV['EMAIL_SERVER'] = 'example.com'
+ENV['ASSETS_ADMIN'] = "Joshua Wright"
 
 Capybara.configure do |config|
   config.javascript_driver = :webkit
