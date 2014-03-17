@@ -28,6 +28,7 @@ describe SpreadsheetsController do
 
       it "should redirect to root page" do
         post :import, "spreadsheet-file" => @file
+        flash[:success].should_not be_nil
         response.should redirect_to root_path
       end
 
@@ -39,12 +40,13 @@ describe SpreadsheetsController do
     describe "unsuccessfully" do
 
       before do
-        Asset.should_receive(:import).with(an_instance_of(Rack::Test::UploadedFile)).once.and_return(false)
+        Asset.should_receive(:import).with(an_instance_of(Rack::Test::UploadedFile)).once.and_return(["some error"])
       end
 
       it "should return client error" do
         post :import, "spreadsheet-file" => @file
-        response.should be_bad_request
+        flash[:error].should_not be_nil
+        response.should redirect_to root_path
       end
     end
   end

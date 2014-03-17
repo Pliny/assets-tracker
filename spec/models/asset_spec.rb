@@ -47,6 +47,21 @@ describe Asset do
       Asset.import(@file).should be_true
     end
 
+    describe "return value" do
+
+      before do
+        @admin = ENV['ASSETS_ADMIN']
+        ENV['ASSETS_ADMIN'] = nil
+      end
+
+      after  { ENV['ASSETS_ADMIN'] = @admin}
+
+    it "should describe all failed database insertion attempts" do
+      file = Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/files/simple_test_no_user.xlsx'), ' application/vnd.ms-excel.sheet.macroenabled.12')
+      Asset.import(file).should == [ "Row 3 in AppendList sheet has error 'User can't be blank'" ]
+    end
+    end
+
     describe "attributes set" do
 
       before { Asset.import(@file) }

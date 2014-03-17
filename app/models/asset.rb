@@ -5,8 +5,12 @@ class Asset < ActiveRecord::Base
   belongs_to :user
 
   def self.import file
+    errors = []
+
     spreadsheet = open_spreadsheet(file)
-    header = spreadsheet.row(2, "AppendList")
+
+    sheet = "AppendList"
+    header = spreadsheet.row(2, sheet)
 
     (3..spreadsheet.last_row).each do |i|
       row = Hash[[header, spreadsheet.row(i)].transpose]
@@ -15,22 +19,33 @@ class Asset < ActiveRecord::Base
 
       asset = Asset.find_by_serial_no(row["Serial No"]) || Asset.new
 
-      default_user = nil
-      if row["Owner"].nil?
-        default_user = User.find_by_full_name(ENV['ASSETS_ADMIN']) || User.create_by_full_name!(ENV['ASSETS_ADMIN'])
+      user = nil
+      if row["Owner"].nil? && ENV['ASSETS_ADMIN'].present?
+        user = User.find_by_full_name(ENV['ASSETS_ADMIN']) || User.create_by_full_name!(ENV['ASSETS_ADMIN'])
+      elsif row["Owner"].present?
+        user = User.find_by_full_name(row["Owner"].strip.titleize) || User.create_by_full_name!(row["Owner"].strip.titleize)
       end
 
       asset.attributes = {
         serial_no:   row["Serial No"],
-        user:        default_user || User.find_by_full_name(row["Owner"].strip.titleize) || User.create_by_full_name!(row["Owner"]),
+        user:        user,
         mac_address: row["MAC"],
         notes:       row["Notes"],
         in_house:    (true if row["In House"].try(:downcase) == 'y')
       }
 
-      return false if asset.save == false
+      asset.save
+
+      if asset.errors.present?
+        errors << "Row #{i} in #{sheet} sheet has error '#{asset.errors.full_messages.join(", ")}'"
+      end
     end
-    true
+
+    if errors.empty?
+      return true
+    else
+      return errors
+    end
   end
 
   private

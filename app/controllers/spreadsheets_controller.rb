@@ -5,10 +5,12 @@ class SpreadsheetsController < ApplicationController
   end
 
   def import
-    if Asset.import(params['spreadsheet-file']) == true
-      redirect_to root_path
+    result = Asset.import(params['spreadsheet-file'])
+    if result == true
+      flash[:success] = "Successfully imported spreadsheet!"
     else
-      head :bad_request
+      flash[:error] = "There were errors importing some rows: <strong>#{result.join(", ")}</strong>. All other rows have been successfully imported.".html_safe
     end
+    redirect_to root_path
   end
 end

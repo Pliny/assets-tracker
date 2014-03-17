@@ -42,6 +42,7 @@ group :test do
   gem 'timecop'
   gem 'database_cleaner'
   gem 'factory_girl_rails'
+  gem 'capybara-webkit'
 end
 
 gem 'jquery-rails'
