@@ -11,6 +11,8 @@ class Asset < ActiveRecord::Base
     (3..spreadsheet.last_row).each do |i|
       row = Hash[[header, spreadsheet.row(i)].transpose]
 
+      next if true == invalid_row?(row)
+
       asset = Asset.find_by_serial_no(row["Serial No"]) || Asset.new
 
       default_user = nil
@@ -28,6 +30,7 @@ class Asset < ActiveRecord::Base
 
       return false if asset.save == false
     end
+    true
   end
 
   private
@@ -39,5 +42,9 @@ class Asset < ActiveRecord::Base
     when ".xlsm" then Roo::Excelx.new(file.path, file_warning: :ignore)
     else raise "Filetype is not supported: #{file.original_filename}"
     end
+  end
+
+  def self.invalid_row?(row)
+    row.values.reject(&:blank?).empty?
   end
 end

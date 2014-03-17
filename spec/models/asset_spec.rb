@@ -43,6 +43,10 @@ describe Asset do
       Asset.all.first.user.should == User.find_by_full_name(ENV['ASSETS_ADMIN'])
     end
 
+    it "should not try to create an entry on rows without device ids" do
+      Asset.import(@file).should be_true
+    end
+
     describe "attributes set" do
 
       before { Asset.import(@file) }
