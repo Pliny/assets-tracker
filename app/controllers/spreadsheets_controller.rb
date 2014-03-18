@@ -1,5 +1,7 @@
 class SpreadsheetsController < ApplicationController
 
+  before_action :authenticate
+
   def index
     @tool_active = true
   end

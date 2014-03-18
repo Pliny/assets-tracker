@@ -10,6 +10,8 @@ gem 'json'
 
 gem "roo", "~> 1.13.2"
 
+gem "paper_trail", "~> 3.0.1"
+
 # Gems used only for assets and not required
 # in production environments by default.
 gem 'bootstrap-sass', '~> 3.0.2.1'

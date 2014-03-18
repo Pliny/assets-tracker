@@ -7,7 +7,7 @@ describe "Dynamic Flows", js: true do
     # Do not delete data in schema table
     ActiveRecord::Base.connection.tables.each do |table|
       model_name = table.camelize.singularize
-      if model_name != "SchemaMigration"
+      if model_name != "SchemaMigration" && model_name != "Version"
         model_name.constantize.delete_all
       end
     end

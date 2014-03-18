@@ -86,6 +86,17 @@ describe Asset do
         Asset.all.first.in_house.should be_true
       end
     end
+
+    describe "versioning", versioning: true do
+
+      it "should be enabled here" do
+        PaperTrail.should be_enabled
+      end
+
+      it "should start the history when created" do
+        expect { Asset.import(@file) }.to change(PaperTrail::Version, :count).by 1
+      end
+    end
   end
 
   describe ".open_spreadsheet" do
