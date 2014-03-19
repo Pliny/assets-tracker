@@ -1,5 +1,5 @@
 AssetTracker::Application.routes.draw do
-  root 'assets#index'
+  root 'versions#index'
 
   get    '/signin',  to: 'sessions#new',     as: 'signin'
   delete '/signout', to: 'sessions#destroy', as: 'signout'
@@ -10,6 +10,8 @@ AssetTracker::Application.routes.draw do
   resources :spreadsheets do
     collection { post :import }
   end
+
+  resources :assets, only: [ :index ]
 
 
   # The priority is based upon order of creation: first created -> highest priority.

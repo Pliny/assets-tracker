@@ -28,4 +28,6 @@ AssetTracker::Application.configure do
   config.assets.debug = true
 
   config.sass.cache = false
+
+  config.time_zone = 'Pacific Time (US & Canada)'
 end

@@ -6,7 +6,9 @@ describe "Static Views" do
 
   describe "common elements" do
 
-    before { visit root_path }
+    before do
+      visit root_path
+    end
 
     it { should have_selector('.navbar-header a.navbar-brand')}
 
@@ -17,6 +19,19 @@ describe "Static Views" do
     describe "anonymous user" do
 
       it { should have_selector('body > .container > .google-signin')}
+    end
+
+    describe "logged in user", versioning: true do
+
+      before do
+        integration_login(first_name: "dude", last_name: "Mctalis", email: "dude@example.com")
+        PaperTrail.whodunnit = (User.all.first)
+        FactoryGirl.create(:asset)
+        PaperTrail.whodunnit = nil
+        visit root_path
+      end
+
+      it { should have_selector(".panel")}
     end
   end
 

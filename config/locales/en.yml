@@ -21,3 +21,9 @@
 
 en:
   hello: "Hello world"
+  time:
+    formats:
+      default: ! '%Y-%m-%d'
+      long: ! '%B %d, %Y'
+      short: ! '%b %d'
+      custom: ! '%A, %B %d, %Y @ %l:%M%P'
