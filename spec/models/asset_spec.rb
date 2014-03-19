@@ -4,6 +4,8 @@ describe Asset do
 
   it { should respond_to :user }
 
+  it { should respond_to :hardware_version }
+
   describe "validations" do
 
     it "should require a serial number" do
@@ -17,6 +19,11 @@ describe Asset do
     it "should have a unique serial number" do
       FactoryGirl.create(:asset, serial_no: "TEST")
       Asset.new(serial_no: "TEST").should have(1).error_on :serial_no
+    end
+
+    it "should have a hardware version" do
+      FactoryGirl.create(:hardware_version, name: "asdf", project: "qwer")
+      Asset.new.should have(1).error_on :hardware_version_id
     end
   end
 
@@ -47,6 +54,12 @@ describe Asset do
       Asset.import(@file).should be_true
     end
 
+    it "should find existing hardware verison" do
+      hardware_version = FactoryGirl.create(:hardware_version, name: "PreDVT", project: "Tiburon")
+      Asset.import(@file)
+      Asset.all.first.hardware_version.should == hardware_version
+    end
+
     describe "return value" do
 
       before do
@@ -56,10 +69,10 @@ describe Asset do
 
       after  { ENV['ASSETS_ADMIN'] = @admin}
 
-    it "should describe all failed database insertion attempts" do
-      file = Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/files/simple_test_no_user.xlsx'), ' application/vnd.ms-excel.sheet.macroenabled.12')
-      Asset.import(file).should == [ "Row 3 in AppendList sheet has error 'User can't be blank'" ]
-    end
+      it "should describe all failed database insertion attempts" do
+        file = Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/files/simple_test_no_user.xlsx'), ' application/vnd.ms-excel.sheet.macroenabled.12')
+        Asset.import(file).should == [ "Row 3 in AppendList sheet has error 'User can't be blank'" ]
+      end
     end
 
     describe "attributes set" do
@@ -84,6 +97,10 @@ describe Asset do
 
       it "should set the 'in-house' boolean" do
         Asset.all.first.in_house.should be_true
+      end
+
+      it "should set the hardware version" do
+        Asset.all.first.hardware_version.should == HardwareVersion.all.first
       end
     end
 

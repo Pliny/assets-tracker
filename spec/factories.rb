@@ -10,7 +10,16 @@ FactoryGirl.define do
     serial_no 'DEVZASER'
     ignore do
       user_args nil
+      hardware_version_args nil
     end
     user { create(:user, user_args) }
+    hardware_version { create(:hardware_version, hardware_version_args) }
+  end
+end
+
+FactoryGirl.define do
+  factory :hardware_version do
+    name 'predvt'
+    project 'tiburon'
   end
 end

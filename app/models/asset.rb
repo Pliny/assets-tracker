@@ -1,8 +1,13 @@
 class Asset < ActiveRecord::Base
-  validates_presence_of :serial_no, :user_id
+
+  HARDWARE_VERSION = "PreDVT"
+  PROJECT          = "Tiburon"
+
+  validates_presence_of :serial_no, :user_id, :hardware_version_id
   validates_uniqueness_of :serial_no
 
   belongs_to :user
+  belongs_to :hardware_version
 
   has_paper_trail
 
@@ -19,6 +24,9 @@ class Asset < ActiveRecord::Base
 
       next if true == invalid_row?(row)
 
+      row["Hardware Version"] ||= HARDWARE_VERSION
+      row["Project"]          ||= PROJECT
+
       asset = Asset.find_by_serial_no(row["Serial No"]) || Asset.new
 
       user = nil
@@ -33,7 +41,8 @@ class Asset < ActiveRecord::Base
         user:        user,
         mac_address: row["MAC"],
         notes:       row["Notes"],
-        in_house:    (true if row["In House"].try(:downcase) == 'y')
+        in_house:    (true if row["In House"].try(:downcase) == 'y'),
+        hardware_version_id: HardwareVersion.find_or_create_by(name: row["Hardware Version"], project: row["Project"]).id
       }
 
       asset.save
