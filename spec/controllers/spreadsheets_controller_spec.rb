@@ -14,6 +14,12 @@ describe SpreadsheetsController do
         get :index
         assigns(:tool_active).should be_true
       end
+
+      it "should not set version metadata", versioning: true do
+        PaperTrail.should be_enabled
+        controller.should_not_receive(:info_for_paper_trail)
+        get :index
+      end
     end
 
     describe "anonymous user" do
@@ -39,6 +45,11 @@ describe SpreadsheetsController do
       it "should create a fully populated versioning information", versioning: true do
         post :import, "spreadsheet-file" => @file
         Asset.all.first.originator.should == @user.id.to_s
+      end
+
+      it "should store that assets were created using Excel import", versioning: true do
+        post :import, "spreadsheet-file" => @file
+        Asset.all.first.versions.first.metadata.should == "via Excel spreadsheet #{controller.view_context.content_tag(:strong, @file.original_filename)}"
       end
 
       describe "successfully" do

@@ -4,5 +4,5 @@
 = form_tag import_spreadsheets_path, multipart: true do
   = label_tag "spreadsheet-file", "File Input"
   = file_field_tag 'spreadsheet-file', class: "btn-block", id: "spreadsheet-file"
-  .help-block="XLS or CVS file supported"
+  .help-block="XLSX or XLSXM file supported"
   = submit_tag "Import", class: "btn btn-primary btn-lg", disabled: :disabled, id: "spreadsheet-submit", :'data-disable-with' => "Importing..."

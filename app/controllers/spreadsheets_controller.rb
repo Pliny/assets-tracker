@@ -15,4 +15,14 @@ class SpreadsheetsController < ApplicationController
     end
     redirect_to root_path
   end
+
+  def info_for_paper_trail
+    { :metadata => "via Excel spreadsheet #{view_context.content_tag(:strong, params['spreadsheet-file'].original_filename)}" }
+  end
+
+  private
+
+  def paper_trail_enabled_for_controller
+    PaperTrail.enabled? && action_name.to_sym == :import
+  end
 end
