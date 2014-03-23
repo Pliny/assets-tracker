@@ -1,13 +1,1 @@
-- @history.each  do |item|
-  .panel.panel-primary
-    .panel-heading
-      %h3.panel-title
-        ="#{l item.created_at, format: :custom}"
-    .panel-body
-      %strong
-        = "#{whodunnit item.whodunnit.to_i}"
-      = " #{event item.event} #{item_type item.item_type}"
-      = " with serial number "
-      %strong
-        = "#{Asset.find_by_id(item.item_id).serial_no}" if item.item_type == "Asset"
-      = "#{item.metadata}.".html_safe
+= render partial: 'version', collection: @versions
