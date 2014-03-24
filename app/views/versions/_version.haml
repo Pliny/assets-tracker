@@ -3,6 +3,7 @@
     %h3.panel-title
       ="#{l version.created_at, format: :custom}"
   .panel-body
+    = image_tag(get_image_from(User.find_by_id(version.whodunnit.to_i)), class: "small-image")
     %strong
       = "#{whodunnit version.whodunnit.to_i}"
     = " #{event version.event} #{item_type version.item_type}"
