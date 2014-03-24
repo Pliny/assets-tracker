@@ -79,5 +79,34 @@ describe "Static Views" do
 
     it { should be }
   end
+
+  describe "pagination" do
+
+    before do
+      integration_login
+    end
+
+    it "should paginate" do
+      3.times { FactoryGirl.create(:asset) }
+      visit assets_path
+      all(".panel-primary").length.should == 2
+    end
+
+    it "should paginate to the second page when instructed" do
+      Timecop.freeze(Time.now-1.day)
+      FactoryGirl.create(:asset, serial_no: "TEST")
+      Timecop.return
+      2.times { FactoryGirl.create(:asset) }
+      visit assets_path(page: 2)
+      all(".panel-primary > .panel-body > h3").length.should == 1
+      find(".panel-primary > .panel-body > h3").should have_content "TEST"
+    end
+
+    it "should have a link at the bottom" do
+      3.times { FactoryGirl.create(:asset) }
+      visit assets_path
+
+    end
+  end
 end
 

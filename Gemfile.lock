@@ -31,6 +31,9 @@ GEM
       activemodel
       fog (>= 1.8.0)
     atomic (1.1.14)
+    bootstrap-kaminari-views (0.0.3)
+      kaminari (>= 0.13)
+      rails (>= 3.1)
     bootstrap-sass (3.0.2.1)
       sass (~> 3.2)
     builder (3.1.4)
@@ -92,6 +95,9 @@ GEM
     json (1.8.1)
     jwt (0.1.11)
       multi_json (>= 1.5)
+    kaminari (0.15.1)
+      actionpack (>= 3.0.0)
+      activesupport (>= 3.0.0)
     listen (2.2.0)
       celluloid (>= 0.15.2)
       rb-fsevent (>= 0.9.3)
@@ -231,6 +237,7 @@ PLATFORMS
 
 DEPENDENCIES
   asset_sync
+  bootstrap-kaminari-views
   bootstrap-sass (~> 3.0.2.1)
   capybara
   capybara-webkit
@@ -241,6 +248,7 @@ DEPENDENCIES
   jbuilder (~> 1.2)
   jquery-rails
   json
+  kaminari (~> 0.15.1)
   listen
   omniauth-google-oauth2 (~> 0.2.2)
   paper_trail (~> 3.0.1)

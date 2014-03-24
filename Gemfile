@@ -12,6 +12,9 @@ gem "roo", "~> 1.13.2"
 
 gem "paper_trail", "~> 3.0.1"
 
+gem 'kaminari', '~> 0.15.1'
+gem 'bootstrap-kaminari-views'
+
 # Gems used only for assets and not required
 # in production environments by default.
 gem 'bootstrap-sass', '~> 3.0.2.1'

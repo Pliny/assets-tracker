@@ -7,7 +7,7 @@ end
 
 FactoryGirl.define do
   factory :asset do
-    serial_no 'DEVZASER'
+    sequence(:serial_no) { |n| "DEVZASER#{n}"}
     ignore do
       user_args nil
       hardware_version_args nil
@@ -19,7 +19,7 @@ end
 
 FactoryGirl.define do
   factory :hardware_version do
-    name 'predvt'
+    sequence(:name) { |n| "spinname#{n}" }
     project 'tiburon'
   end
 end
