@@ -7,11 +7,11 @@ AssetTracker::Application.routes.draw do
   get "/auth/google_oauth2/callback" => "google_sessions#login"
   get "/auth/failure" => "google_sessions#error"
 
-  resources :spreadsheets do
+  resources :spreadsheets, only: [ :index ] do
     collection { post :import }
   end
 
-  resources :assets, only: [ :index ]
+  resources :assets, only: [ :index, :edit, :update ]
 
   resources :versions, only: [ :index ]
 

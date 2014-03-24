@@ -119,5 +119,27 @@ describe "Static Views" do
       find(".pagination").should be_true
     end
   end
+
+  describe "editing an existing asset" do
+
+    before { integration_login }
+
+    it "should exist" do
+      asset = FactoryGirl.create(:asset)
+      visit edit_asset_path(asset)
+      find('form').should be_true
+    end
+
+    it "should edit the asset" do
+      asset = FactoryGirl.create(:asset)
+      visit edit_asset_path(asset)
+      fill_in "Serial Number", with: "BLABLA"
+      click_on "Update"
+      current_path.should == assets_path
+      asset.reload.serial_no.should == "BLABLA"
+    end
+
+    it "should redirect to the asset page"
+  end
 end
 

@@ -25,6 +25,10 @@ describe Asset do
       FactoryGirl.create(:hardware_version, name: "asdf", project: "qwer")
       Asset.new.should have(1).error_on :hardware_version_id
     end
+
+    it "should have a valid IPv4 address, if exists"
+
+    it "should have a valid unique MAC address, if exists"
   end
 
   describe ".import" do

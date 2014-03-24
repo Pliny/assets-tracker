@@ -27,3 +27,13 @@ en:
       long: ! '%B %d, %Y'
       short: ! '%b %d'
       custom: ! '%A, %B %d, %Y @ %l:%M%P'
+  helpers:
+    label:
+      asset:
+        serial_no:     "Serial Number"
+        mac_address:   "MAC Address"
+        ipv4_address:  "IPv4 Address"
+      user:
+        full_name: "Owner"
+      hardware_version:
+        name: "Hardware Version"
