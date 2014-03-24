@@ -1,0 +1,33 @@
+.panel.panel-primary
+  .panel-heading
+    %h3.panel-title.row
+      .col-xs-6.text-left=asset.hardware_version.name
+      .col-xs-6.text-right=asset.hardware_version.project.titleize
+  .panel-body.itembg.container-fluid
+    .row
+      .col-xs-6.text-left=asset.user.full_name.titleize
+      .col-xs-6.text-right=l asset.created_at
+    .row
+      .col-xs-12
+        %h3=asset.serial_no
+    .row
+      .col-xs-12
+        %strong="Location: "
+        = display_location asset.in_house
+    .row
+      .col-xs-12
+        .row.marginalize-top.text-center
+          .col-xs-6
+            %strong="MAC Addr"
+            .center-block.line
+          .col-xs-6
+            %strong="IPv4 Addr"
+            .center-block.line
+        .row
+          .col-xs-6.text-center=asset.mac_address  || "Unknown"
+          .col-xs-6.text-center=asset.ipv4_address || "Unknown"
+    .row.marginalize-top
+      .col-xs-12
+        %strong.text-left="NOTES:"
+        .well=asset.notes
+
