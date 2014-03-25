@@ -52,8 +52,8 @@ describe "Static Views" do
         find(".navbar-nav > li.dropdown > a").should have_content("Dude Mctalis")
       end
 
-      it "should show the 'Tools' option" do
-        find(".navbar-nav:first > li > a.dropdown-toggle").should have_content("Tools")
+      it "should show the 'Links' option" do
+        find(".navbar-nav:first > li > a.dropdown-toggle").should have_content("Links")
       end
     end
 
@@ -65,7 +65,7 @@ describe "Static Views" do
         find(".navbar-nav > li > a[href=\"#{signin_path}\"]").should have_content("Log in")
       end
 
-      it "should not show the 'Tools' option" do
+      it "should not show the 'Links' option" do
         page.should have_no_selector(:css, ".navbar-nav:first > li > a.dropdown-toggle")
       end
     end
