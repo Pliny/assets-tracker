@@ -30,6 +30,10 @@ describe User do
       User.new.should have(1).error_on :first_name
     end
 
+    it "should have a last name" do
+      User.new.should have(1).error_on :last_name
+    end
+
     it "should have a valid email" do
       user = User.new(email: 'dave examplecom')
       user.should have(1).error_on :email
@@ -86,7 +90,7 @@ describe User do
 
     it "should create a new user and give a temporary email" do
       lambda do
-        User.create_by_full_name! "Dude lamina"
+        User.create_by_full_name "Dude lamina"
       end.should change(User, :count).by 1
     end
   end

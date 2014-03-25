@@ -65,9 +65,10 @@ describe Asset do
     end
 
     it "should gracefully error on people with first names only" do
-      # file1 = Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/files/first_name_only.xlsx'), ' application/vnd.ms-excel.sheet.macroenabled.12')
-      # Asset.import(file1)
-      # expect { Asset.import(file) }.to change(Asset, :count).by 0
+      errors = []
+      file = Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/files/first_name_only.xlsx'), ' application/vnd.ms-excel.sheet.macroenabled.12')
+      expect { errors = Asset.import(file) }.to change(Asset, :count).by 0
+      errors.should == ["Row 3 in AppendList sheet has error related to the Owner 'Last name can't be blank'"]
     end
 
     describe "return value" do

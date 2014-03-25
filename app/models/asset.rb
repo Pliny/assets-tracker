@@ -31,9 +31,9 @@ class Asset < ActiveRecord::Base
 
       user = nil
       if row["Owner"].nil? && ENV['ASSETS_ADMIN'].present?
-        user = User.find_by_full_name(ENV['ASSETS_ADMIN']) || User.create_by_full_name!(ENV['ASSETS_ADMIN'])
+        user = User.find_by_full_name(ENV['ASSETS_ADMIN']) || User.create_by_full_name(ENV['ASSETS_ADMIN'])
       elsif row["Owner"].present?
-        user = User.find_by_full_name(row["Owner"].strip.titleize) || User.create_by_full_name!(row["Owner"].strip.titleize)
+        user = User.find_by_full_name(row["Owner"].strip.titleize) || User.create_by_full_name(row["Owner"].strip.titleize)
       end
 
       asset.attributes = {
@@ -48,7 +48,11 @@ class Asset < ActiveRecord::Base
       asset.save
 
       if asset.errors.present?
-        errors << "Row #{i} in #{sheet} sheet has error '#{asset.errors.full_messages.join(", ")}'"
+        if asset.user.present? && asset.user.errors.present?
+          errors << "Row #{i} in #{sheet} sheet has error related to the Owner '#{asset.user.errors.full_messages.join(", ")}'"
+        else
+          errors << "Row #{i} in #{sheet} sheet has error '#{asset.errors.full_messages.join(", ")}'"
+        end
       end
     end
 
