@@ -139,6 +139,20 @@ describe "Static Views" do
       asset.reload.serial_no.should == "BLABLA"
     end
 
+    it "should handle bad input graciously" do
+      asset = FactoryGirl.create(:asset)
+      visit edit_asset_path(asset)
+      fill_in "Serial Number", with: ""
+      fill_in "Owner", with: "asdssssf"
+      fill_in "Hardware Version", with: "qweqwer"
+      fill_in "Project", with: "dksae"
+      fill_in "MAC Address", with: "1234"
+      fill_in "IPv4 Address", with: "765rd"
+      click_on "Update"
+      current_path.should == asset_path(asset)
+      page.has_selector?('.has-error')
+    end
+
     it "should redirect to the asset page"
   end
 end

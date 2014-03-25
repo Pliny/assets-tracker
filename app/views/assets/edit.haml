@@ -1,34 +1,21 @@
 .form-tracker.center-block
-  = form_for @asset, url: asset_path(@asset) do |f|
-    .form-group
-      = f.label :serial_no
-      = f.text_field :serial_no, class: 'form-control'
+  = bootstrap_form_for @asset, url: asset_path(@asset) do |f|
+    - if @asset.errors.present?
+      = f.alert_message "Errors found, please fix."
+    = f.text_field :serial_no
     = f.fields_for @asset.user do |f|
-      .form-group
-        = f.label :full_name
-        = f.text_field :full_name, class: 'form-control'
+      = f.text_field :full_name
     .form-inline
-      .form-group
-        = f.label :mac_address
-        = f.text_field :mac_address, class: 'form-control'
-      .form-group.pull-right-tracker
-        = f.label :ipv4_address
-        = f.text_field :ipv4_address, class: 'form-control'
+      = f.text_field :mac_address
+      = f.text_field :ipv4_address
     .clearfix
     .marginalize-top2
-    .form-group
-      = f.label :notes
-      = f.text_area :notes, class: 'form-control', rows: 6
+    = f.text_area :notes, rows: 6
     .checkbox
-      = f.label :in_house
       = f.check_box :in_house
     = f.fields_for @asset.hardware_version do |f|
       .form-inline
-        .form-group
-          = f.label :name
-          = f.text_field :name, class: 'form-control'
-        .form-group.pull-right-tracker
-          = f.label :project
-          = f.text_field :project, class: 'form-control'
+        = f.text_field :name
+        = f.text_field :project
     .clearfix
     = f.submit "Update", class: "marginalize-top btn btn-primary", :'data-disable-with' => "Updating..."

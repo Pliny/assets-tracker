@@ -14,6 +14,7 @@ gem "paper_trail", "~> 3.0.1"
 
 gem 'kaminari', '~> 0.15.1'
 gem 'bootstrap-kaminari-views'
+gem 'bootstrap_form', '~> 2.0.1'
 
 # Gems used only for assets and not required
 # in production environments by default.

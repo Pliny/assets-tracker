@@ -68,17 +68,17 @@ describe AssetsController do
 
         it "should redirect to edit page on asset update failure" do
           post :update, id: @asset, asset: { serial_no: "" }
-          response.should redirect_to edit_asset_path(@asset)
+          response.should render_template :edit
         end
 
         it "should fail if hardware version is not found" do
           post :update, id: @asset, asset: { hardware_version: {name: "bla", project: "blue"} }
-          response.should redirect_to edit_asset_path(@asset)
+          response.should render_template :edit
         end
 
         it "should fail if user is not found" do
           post :update, id: @asset, asset: { user: { full_name: "bdsa dska" } }
-          response.should redirect_to edit_asset_path(@asset)
+          response.should render_template :edit
         end
       end
 
