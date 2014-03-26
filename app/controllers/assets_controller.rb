@@ -26,7 +26,7 @@ class AssetsController < ApplicationController
     @asset.hardware_version = HardwareVersion.find_by(params[:asset][:hardware_version]) if params[:asset][:hardware_version]
 
     if @asset.save
-      redirect_to assets_path
+      redirect_to asset_path(@asset)
     else
       if @asset.user.nil?
         @asset.user = User.new(:full_name => params[:asset][:user][:full_name])

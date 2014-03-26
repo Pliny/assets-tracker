@@ -135,7 +135,7 @@ describe "Static Views" do
       visit edit_asset_path(asset)
       fill_in "Serial Number", with: "BLABLA"
       click_on "Update"
-      current_path.should == assets_path
+      current_path.should == asset_path(asset)
       asset.reload.serial_no.should == "BLABLA"
     end
 
@@ -152,8 +152,6 @@ describe "Static Views" do
       current_path.should == asset_path(asset)
       page.has_selector?('.has-error')
     end
-
-    it "should redirect to the asset page"
   end
 
   describe "view an asset", versioning: true do

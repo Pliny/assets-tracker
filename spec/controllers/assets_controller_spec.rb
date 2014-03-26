@@ -61,7 +61,7 @@ describe AssetsController do
 
       it "should redirect to the asset index on successful update" do
         post :update, id: @asset, asset: { serial_no: "TEST" }
-        response.should redirect_to assets_path
+        response.should redirect_to asset_path(@asset)
       end
 
       describe "validation failures" do
@@ -127,9 +127,6 @@ describe AssetsController do
           @asset.reload.hardware_version.project.should == "Project UPDATED"
         end
       end
-
-      pending "should redirect to the asset itself"
-
     end
 
     describe "anonymous user" do
