@@ -1,4 +1,4 @@
-.panel.panel-primary.asset-tracker.center-block
+.panel.panel-primary
   .panel-heading
     %h3.panel-title.row
       .col-xs-6.text-left=asset.hardware_version.name
@@ -9,7 +9,10 @@
         = image_tag(get_image_from(asset.user), class: "small-image")
         = asset.user.full_name.titleize
       .col-xs-6.match-small-image.text-right.small=l asset.created_at
-    %h3=link_to asset.serial_no, edit_asset_path(asset)
+    - if @showing
+      %h3=asset.serial_no
+    - else
+      %h3=link_to asset.serial_no, asset_path(asset)
     %div
       %strong="Location: "
       = display_location asset.in_house

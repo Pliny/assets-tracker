@@ -7,6 +7,11 @@ class AssetsController < ApplicationController
     @assets = Asset.order("updated_at DESC").page @page
   end
 
+  def show
+    @asset = Asset.find_by_id(params[:id])
+    @showing = params[:action]
+  end
+
   def edit
     @asset = Asset.find_by_id(params[:id])
     head :not_found if @asset.nil?

@@ -140,4 +140,17 @@ describe AssetsController do
       end
     end
   end
+
+  describe "GET show" do
+
+    it {should respond_to :show}
+
+    describe "Anonymous user" do
+
+      it "should show the signin page" do
+        get :show, id: FactoryGirl.create(:asset)
+        response.should redirect_to signin_path
+      end
+    end
+  end
 end

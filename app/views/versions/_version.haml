@@ -9,6 +9,10 @@
     = " #{event version.event} #{item_type version.item_type}"
     = " with serial number "
     %strong
-      = link_to("#{Asset.find_by_id(version.item_id).serial_no}", assets_path) if version.item_type == "Asset"
+      - if version.item_type == "Asset"
+        - if @showing
+          = "#{Asset.find_by_id(version.item_id).serial_no}"
+        - else
+          = link_to("#{Asset.find_by_id(version.item_id).serial_no}", asset_path(version.item_id))
     = "#{version.metadata}.".html_safe
 

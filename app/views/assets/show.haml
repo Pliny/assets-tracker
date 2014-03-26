@@ -1,0 +1,9 @@
+.size2.center-block
+  %h2
+    DETAILS
+  = link_to "edit device details", edit_asset_path(@asset), class: "text-right" if @showing
+  = render partial: 'asset', locals: { asset: @asset }
+.size2.center-block
+  %h3
+    HISTORY
+  = render partial: 'versions/version', collection: @asset.versions

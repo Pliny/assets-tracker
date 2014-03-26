@@ -155,5 +155,24 @@ describe "Static Views" do
 
     it "should redirect to the asset page"
   end
+
+  describe "view an asset", versioning: true do
+
+    before do
+      integration_login
+      @asset = FactoryGirl.create(:asset)
+      @asset.update!(serial_no: "ADDING-SOME-HISTORY")
+    end
+
+    it "should show the asset partial" do
+      visit asset_path(@asset)
+      page.should have_selector('.panel')
+    end
+
+    it "should show asset history" do
+      visit asset_path(@asset)
+      find('.size2:nth-child(2) > .panel:nth-child(2) > .panel-body').should have_content("ADDING-SOME-HISTORY")
+    end
+  end
 end
 
