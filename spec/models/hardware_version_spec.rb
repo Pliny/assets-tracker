@@ -27,4 +27,6 @@ describe HardwareVersion do
       HardwareVersion.new(name: "blablA", project: "ASDF").should have(1).error_on :name
     end
   end
+
+  it { should respond_to :display }
 end

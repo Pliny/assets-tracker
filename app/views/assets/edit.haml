@@ -13,9 +13,6 @@
     = f.text_area :notes, rows: 6
     .checkbox
       = f.check_box :in_house
-    = f.fields_for @asset.hardware_version do |f|
-      .form-inline
-        = f.text_field :name
-        = f.text_field :project
+    = collection_select(:asset, :hardware_version_id, HardwareVersion.all, :id, :display, {}, class: 'form-control' )
     .clearfix
     = f.submit "Update", class: "marginalize-top btn btn-primary", :'data-disable-with' => "Updating..."

@@ -144,8 +144,6 @@ describe "Static Views" do
       visit edit_asset_path(asset)
       fill_in "Serial Number", with: ""
       fill_in "Owner", with: "asdssssf"
-      fill_in "Hardware Version", with: "qweqwer"
-      fill_in "Project", with: "dksae"
       fill_in "MAC Address", with: "1234"
       fill_in "IPv4 Address", with: "765rd"
       click_on "Update"
