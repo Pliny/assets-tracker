@@ -29,7 +29,7 @@ en:
       custom: ! '%A, %B %d, %Y @ %l:%M%P'
   helpers:
     label:
-      asset:
+      device:
         serial_no:     "Serial Number"
         mac_address:   "MAC Address"
         ipv4_address:  "IPv4 Address"

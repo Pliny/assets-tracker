@@ -1,4 +1,4 @@
-class Asset < ActiveRecord::Base
+class Device < ActiveRecord::Base
 
   HARDWARE_VERSION = "PreDVT"
   PROJECT          = "Tiburon"
@@ -27,7 +27,7 @@ class Asset < ActiveRecord::Base
       row["Hardware Version"] ||= HARDWARE_VERSION
       row["Project"]          ||= PROJECT
 
-      asset = Asset.find_by_serial_no(row["Serial No"]) || Asset.new
+      device = Device.find_by_serial_no(row["Serial No"]) || Device.new
 
       user = nil
       if row["Owner"].nil? && ENV['ASSETS_ADMIN'].present?
@@ -36,7 +36,7 @@ class Asset < ActiveRecord::Base
         user = User.find_by_full_name(row["Owner"].strip.titleize) || User.create_by_full_name(row["Owner"].strip.titleize)
       end
 
-      asset.attributes = {
+      device.attributes = {
         serial_no:   row["Serial No"],
         user:        user,
         mac_address: row["MAC"],
@@ -45,13 +45,13 @@ class Asset < ActiveRecord::Base
         hardware_version_id: HardwareVersion.find_or_create_by(name: row["Hardware Version"], project: row["Project"]).id
       }
 
-      asset.save
+      device.save
 
-      if asset.errors.present?
-        if asset.user.present? && asset.user.errors.present?
-          errors << "Row #{i} in #{sheet} sheet has error related to the Owner '#{asset.user.errors.full_messages.join(", ")}'"
+      if device.errors.present?
+        if device.user.present? && device.user.errors.present?
+          errors << "Row #{i} in #{sheet} sheet has error related to the Owner '#{device.user.errors.full_messages.join(", ")}'"
         else
-          errors << "Row #{i} in #{sheet} sheet has error '#{asset.errors.full_messages.join(", ")}'"
+          errors << "Row #{i} in #{sheet} sheet has error '#{device.errors.full_messages.join(", ")}'"
         end
       end
     end

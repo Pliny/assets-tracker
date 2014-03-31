@@ -44,18 +44,18 @@ describe SpreadsheetsController do
 
       it "should create a fully populated versioning information", versioning: true do
         post :import, "spreadsheet-file" => @file
-        Asset.all.first.originator.should == @user.id.to_s
+        Device.all.first.originator.should == @user.id.to_s
       end
 
       it "should store that assets were created using Excel import", versioning: true do
         post :import, "spreadsheet-file" => @file
-        Asset.all.first.versions.first.metadata.should == "via Excel spreadsheet #{controller.view_context.content_tag(:strong, @file.original_filename)}"
+        Device.all.first.versions.first.metadata.should == "via Excel spreadsheet #{controller.view_context.content_tag(:strong, @file.original_filename)}"
       end
 
       describe "successfully" do
 
         before do
-          Asset.should_receive(:import).with(an_instance_of(Rack::Test::UploadedFile)).once.and_return(true)
+          Device.should_receive(:import).with(an_instance_of(Rack::Test::UploadedFile)).once.and_return(true)
         end
 
         it "should redirect to root page" do
@@ -72,7 +72,7 @@ describe SpreadsheetsController do
       describe "unsuccessfully" do
 
         before do
-          Asset.should_receive(:import).with(an_instance_of(Rack::Test::UploadedFile)).once.and_return(["some error"])
+          Device.should_receive(:import).with(an_instance_of(Rack::Test::UploadedFile)).once.and_return(["some error"])
         end
 
         it "should return client error" do

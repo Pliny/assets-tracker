@@ -8,7 +8,7 @@ class User < ActiveRecord::Base
   before_save :create_remember_token
   before_save :normalize_name
 
-  has_many :assets
+  has_many :devices
 
   def self.create_by_full_name full_name
     if full_name.split(' ').length > 1

@@ -26,7 +26,7 @@ describe "Static Views" do
       before do
         integration_login(first_name: "dude", last_name: "Mctalis", email: "dude@example.com")
         PaperTrail.whodunnit = (User.all.first)
-        FactoryGirl.create(:asset)
+        FactoryGirl.create(:device)
         PaperTrail.whodunnit = nil
         visit root_path
       end
@@ -86,33 +86,33 @@ describe "Static Views" do
       integration_login
     end
 
-    it "should paginate assets" do
-      3.times { FactoryGirl.create(:asset) }
-      visit assets_path
+    it "should paginate devices" do
+      3.times { FactoryGirl.create(:device) }
+      visit devices_path
       all(".panel-primary").length.should == 2
     end
 
-    it "should paginate to the second page of assets when instructed" do
+    it "should paginate to the second page of devices when instructed" do
       Timecop.freeze(Time.now-1.day)
-      FactoryGirl.create(:asset, serial_no: "TEST")
+      FactoryGirl.create(:device, serial_no: "TEST")
       Timecop.return
-      2.times { FactoryGirl.create(:asset) }
-      visit assets_path(page: 2)
+      2.times { FactoryGirl.create(:device) }
+      visit devices_path(page: 2)
       all(".panel-primary > .panel-body > h3").length.should == 1
       find(".panel-primary > .panel-body > h3").should have_content "TEST"
     end
 
     it "should have a link at the bottom" do
-      3.times { FactoryGirl.create(:asset) }
-      visit assets_path
+      3.times { FactoryGirl.create(:device) }
+      visit devices_path
       find(".pagination").should be_true
     end
 
     it "should paginate versions", versioning: true do
       Timecop.freeze(Time.now-1.day)
-      FactoryGirl.create(:asset, serial_no: "TEST")
+      FactoryGirl.create(:device, serial_no: "TEST")
       Timecop.return
-      2.times { FactoryGirl.create(:asset) }
+      2.times { FactoryGirl.create(:device) }
       visit versions_path(page: 2)
       all(".panel-primary").length.should == 1
       find(".panel-primary > .panel-body").should have_content "TEST"
@@ -120,79 +120,81 @@ describe "Static Views" do
     end
   end
 
-  describe "editing an existing asset" do
+  describe "editing an existing device" do
 
     before { integration_login }
 
     it "should exist" do
-      asset = FactoryGirl.create(:asset)
-      visit edit_asset_path(asset)
+      device = FactoryGirl.create(:device)
+      visit edit_device_path(device)
       find('form').should be_true
     end
 
-    it "should edit the asset" do
-      asset = FactoryGirl.create(:asset)
-      visit edit_asset_path(asset)
+    it "should edit the device" do
+      device = FactoryGirl.create(:device)
+      visit edit_device_path(device)
       fill_in "Serial Number", with: "BLABLA"
       click_on "Update"
-      current_path.should == asset_path(asset)
-      asset.reload.serial_no.should == "BLABLA"
+      current_path.should == device_path(device)
+      device.reload.serial_no.should == "BLABLA"
+      page.should have_selector('.alert-dismissable')
     end
 
     it "should handle bad input graciously" do
-      asset = FactoryGirl.create(:asset)
-      visit edit_asset_path(asset)
+      device = FactoryGirl.create(:device)
+      visit edit_device_path(device)
       fill_in "Serial Number", with: ""
       fill_in "Owner", with: "asdssssf"
       fill_in "MAC Address", with: "1234"
       fill_in "IPv4 Address", with: "765rd"
       click_on "Update"
-      current_path.should == asset_path(asset)
+      current_path.should == device_path(device)
       page.has_selector?('.has-error')
     end
   end
 
-  describe "view an asset", versioning: true do
+  describe "view an device", versioning: true do
 
     before do
       integration_login
-      @asset = FactoryGirl.create(:asset)
-      @asset.update!(serial_no: "ADDING-SOME-HISTORY")
+      @device = FactoryGirl.create(:device)
+      @device.update!(serial_no: "ADDING-SOME-HISTORY")
     end
 
-    it "should show the asset partial" do
-      visit asset_path(@asset)
+    it "should show the device partial" do
+      visit device_path(@device)
       page.should have_selector('.panel')
     end
 
-    it "should show asset history" do
-      visit asset_path(@asset)
+    it "should show device history" do
+      visit device_path(@device)
       find('.size2:nth-child(2) > .panel:nth-child(2) > .panel-body').should have_content("ADDING-SOME-HISTORY")
     end
   end
 
-  describe "create a new asset" do
+  describe "create a new device" do
 
     before do
       integration_login
     end
 
     it "should show the page" do
-      visit new_asset_path
+      visit new_device_path
       page.should have_selector('form')
     end
 
-    it "should create a user" do
+    it "should create a device" do
       user = FactoryGirl.create(:user)
       hardware_version = FactoryGirl.create(:hardware_version)
-      visit new_asset_path
+      visit new_device_path
       fill_in "Serial Number", with: "DEV12341234"
       fill_in "Owner", with: user.full_name
-      select hardware_version.display, from: "asset_hardware_version_id", visible: false
+      select hardware_version.display, from: "device_hardware_version_id", visible: false
 
-      expect { click_on "Update" }.to change(Asset, :count).by 1
+      expect { click_on "Update" }.to change(Device, :count).by 1
 
-      current_path.should == asset_path(Asset.all.first)
+      current_path.should == device_path(Device.all.first)
+      page.should have_selector('.alert-dismissable')
     end
   end
 end

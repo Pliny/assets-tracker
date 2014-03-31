@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe AssetsController do
+describe DevicesController do
 
   describe "GET index" do
 
@@ -18,7 +18,7 @@ describe AssetsController do
   describe "GET edit" do
 
     before do
-      @asset = FactoryGirl.create(:asset)
+      @device = FactoryGirl.create(:device)
     end
 
     it { should respond_to :edit }
@@ -27,8 +27,8 @@ describe AssetsController do
 
       before { login }
 
-      it "should return 404 if asset is not found" do
-        get :edit, id: (@asset.id+1)
+      it "should return 404 if device is not found" do
+        get :edit, id: (@device.id+1)
         response.should be_not_found
       end
     end
@@ -36,7 +36,7 @@ describe AssetsController do
     describe "Anonymous user" do
 
       it "should show the signin page" do
-        get :edit, id: @asset
+        get :edit, id: @device
         response.should redirect_to signin_path
       end
     end
@@ -45,7 +45,7 @@ describe AssetsController do
   describe "POST update" do
 
     before do
-      @asset = FactoryGirl.create(:asset, serial_no: "DEFAULT", in_house: false)
+      @device = FactoryGirl.create(:device, serial_no: "DEFAULT", in_house: false)
     end
 
     it { should respond_to :update }
@@ -54,30 +54,30 @@ describe AssetsController do
 
       before { login }
 
-      it "should return 404 if asset is not found" do
-        post :update, id: (@asset.id+1), asset: { serial_no: "TEST" }
+      it "should return 404 if device is not found" do
+        post :update, id: (@device.id+1), device: { serial_no: "TEST" }
         response.should be_not_found
       end
 
-      it "should redirect to the asset index on successful update" do
-        post :update, id: @asset, asset: { serial_no: "TEST" }
-        response.should redirect_to asset_path(@asset)
+      it "should redirect to the device index on successful update" do
+        post :update, id: @device, device: { serial_no: "TEST" }
+        response.should redirect_to device_path(@device)
       end
 
       describe "validation failures" do
 
-        it "should redirect to edit page on asset update failure" do
-          post :update, id: @asset, asset: { serial_no: "" }
+        it "should redirect to edit page on device update failure" do
+          post :update, id: @device, device: { serial_no: "" }
           response.should render_template :edit
         end
 
         it "should fail if hardware version is not found" do
-          post :update, id: @asset, asset: { hardware_version: {name: "bla", project: "blue"} }
+          post :update, id: @device, device: { hardware_version: {name: "bla", project: "blue"} }
           response.should render_template :edit
         end
 
         it "should fail if user is not found" do
-          post :update, id: @asset, asset: { user: { full_name: "bdsa dska" } }
+          post :update, id: @device, device: { user: { full_name: "bdsa dska" } }
           response.should render_template :edit
         end
       end
@@ -87,7 +87,7 @@ describe AssetsController do
         before do
           FactoryGirl.create(:user, first_name: "User", last_name: "UPDATED")
           FactoryGirl.create(:hardware_version, name: "name UPDATED", project: "Project UPDATED")
-          post :update, id: @asset, asset: {
+          post :update, id: @device, device: {
             serial_no: "Serial Number UPDATED",
             user: { full_name: "User UPDATED" },
             mac_address: "FF:FF:FF:FF:FF",
@@ -99,32 +99,32 @@ describe AssetsController do
         end
 
         it "should update the serial number" do
-          @asset.reload.serial_no.should == "Serial Number UPDATED"
+          @device.reload.serial_no.should == "Serial Number UPDATED"
         end
 
         it "should update the user" do
-          @asset.reload.user.full_name.should  == "User UPDATED".titleize
+          @device.reload.user.full_name.should  == "User UPDATED".titleize
         end
 
         it "should update the MAC address" do
-          @asset.reload.mac_address.should == "FF:FF:FF:FF:FF"
+          @device.reload.mac_address.should == "FF:FF:FF:FF:FF"
         end
 
         it "should update the IPv4 address" do
-          @asset.reload.ipv4_address.should ==  "192.168.1.1"
+          @device.reload.ipv4_address.should ==  "192.168.1.1"
         end
 
         it "should update the notes" do
-          @asset.reload.notes.should == "Notes UPDATED"
+          @device.reload.notes.should == "Notes UPDATED"
         end
 
         it "should update whether or not the unit is on site" do
-          @asset.reload.in_house.should be_true
+          @device.reload.in_house.should be_true
         end
 
         it "should update the hardware verion information" do
-          @asset.reload.hardware_version.name.should == "name UPDATED"
-          @asset.reload.hardware_version.project.should == "Project UPDATED"
+          @device.reload.hardware_version.name.should == "name UPDATED"
+          @device.reload.hardware_version.project.should == "Project UPDATED"
         end
       end
     end
@@ -132,7 +132,7 @@ describe AssetsController do
     describe "anonymous user" do
 
       it "should show the signin page" do
-        post :update, id: @asset, asset: { serial_no: "TEST" }
+        post :update, id: @device, device: { serial_no: "TEST" }
         response.should redirect_to signin_path
       end
     end
@@ -145,7 +145,7 @@ describe AssetsController do
     describe "Anonymous user" do
 
       it "should show the signin page" do
-        get :show, id: FactoryGirl.create(:asset)
+        get :show, id: FactoryGirl.create(:device)
         response.should redirect_to signin_path
       end
     end
@@ -174,8 +174,8 @@ describe AssetsController do
         login
       end
 
-      def create_asset
-        post :create, asset: {
+      def create_device
+        post :create, device: {
           serial_no: "DEV1234",
           hardware_version_id: FactoryGirl.create(:hardware_version),
           user: { full_name: FactoryGirl.create(:user).full_name }
@@ -183,18 +183,18 @@ describe AssetsController do
       end
 
       it "should redirect to show on successful create" do
-        create_asset
-        response.should redirect_to asset_path(Asset.all.first)
+        create_device
+        response.should redirect_to device_path(Device.all.first)
       end
 
-      it "should create an asset" do
+      it "should create an device" do
         expect {
-          create_asset
-        }.to change(Asset, :count).by 1
+          create_device
+        }.to change(Device, :count).by 1
       end
 
       it "should redirect to new page on failure" do
-        post :create, asset: { serial_no: "DEV1234", user: { full_name: ""} }
+        post :create, device: { serial_no: "DEV1234", user: { full_name: ""} }
         response.should render_template 'new'
       end
     end

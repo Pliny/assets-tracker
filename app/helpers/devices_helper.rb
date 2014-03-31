@@ -1,4 +1,4 @@
-module AssetsHelper
+module DevicesHelper
 
   def display_location in_house
     in_house == true ? "In House" : "Unknown"

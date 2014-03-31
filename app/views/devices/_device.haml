@@ -1,0 +1,32 @@
+.panel.panel-primary
+  .panel-heading
+    %h3.panel-title.row
+      .col-xs-6.text-left=device.hardware_version.name
+      .col-xs-6.text-right=device.hardware_version.project.titleize
+  .panel-body.itembg.container-fluid
+    .row
+      .col-xs-6
+        = image_tag(get_image_from(device.user), class: "small-image")
+        = device.user.full_name.titleize
+      .col-xs-6.match-small-image.text-right.small=l device.created_at
+    - if @showing
+      %h3=device.serial_no
+    - else
+      %h3=link_to device.serial_no, device_path(device)
+    %div
+      %strong="Location: "
+      = display_location device.in_house
+    .row.marginalize-top.text-center
+      .col-xs-6
+        %strong="MAC Addr"
+        .center-block.line
+      .col-xs-6
+        %strong="IPv4 Addr"
+        .center-block.line
+      .row
+        .col-xs-6.text-center=device.mac_address  || "Unknown"
+        .col-xs-6.text-center=device.ipv4_address || "Unknown"
+    .marginalize-top
+      %strong.text-left="NOTES:"
+      .well=device.notes
+

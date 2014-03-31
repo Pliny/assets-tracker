@@ -18,7 +18,7 @@ describe User do
   it { should respond_to(:google_hd) }
   it { should respond_to(:google_image_url) }
 
-  it { should respond_to(:assets) }
+  it { should respond_to(:devices) }
 
   describe "validations" do
 

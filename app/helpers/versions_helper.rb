@@ -15,7 +15,7 @@ module VersionsHelper
 
   def item_type val
     case val
-    when 'Asset' then "a cone"
+    when 'Device' then "a cone"
     else val
     end
   end

@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Asset do
+describe Device do
 
   it { should respond_to :user }
 
@@ -9,21 +9,21 @@ describe Asset do
   describe "validations" do
 
     it "should require a serial number" do
-      Asset.new.should have(1).error_on :serial_no
+      Device.new.should have(1).error_on :serial_no
     end
 
     it "should require a user" do
-      Asset.new.should have(1).error_on :user_id
+      Device.new.should have(1).error_on :user_id
     end
 
     it "should have a unique serial number" do
-      FactoryGirl.create(:asset, serial_no: "TEST")
-      Asset.new(serial_no: "TEST").should have(1).error_on :serial_no
+      FactoryGirl.create(:device, serial_no: "TEST")
+      Device.new(serial_no: "TEST").should have(1).error_on :serial_no
     end
 
     it "should have a hardware version" do
       FactoryGirl.create(:hardware_version, name: "asdf", project: "qwer")
-      Asset.new.should have(1).error_on :hardware_version_id
+      Device.new.should have(1).error_on :hardware_version_id
     end
 
     it "should have a valid IPv4 address, if exists"
@@ -38,36 +38,36 @@ describe Asset do
     end
 
     it "should import the xls file" do
-      expect { Asset.import(@file) }.to change(Asset, :count).by 1
+      expect { Device.import(@file) }.to change(Device, :count).by 1
     end
 
     it "should update existing devices" do
-      FactoryGirl.create(:asset, user_args: { full_name: "ray rodtusci" }, serial_no: "DEVFDXQZTCX3NMEHFDXM")
-      expect { Asset.import(@file).should be_true }.to change(Asset, :count).by 0
-      Asset.count.should == 1
-      Asset.all.first.user.full_name.should == "Aron Rosenberg"
+      FactoryGirl.create(:device, user_args: { full_name: "ray rodtusci" }, serial_no: "DEVFDXQZTCX3NMEHFDXM")
+      expect { Device.import(@file).should be_true }.to change(Device, :count).by 0
+      Device.count.should == 1
+      Device.all.first.user.full_name.should == "Aron Rosenberg"
     end
 
     it "should set user to admin if Owner field is blank" do
       file = Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/files/simple_test_no_user.xlsx'), ' application/vnd.ms-excel.sheet.macroenabled.12')
-      Asset.import(file)
-      Asset.all.first.user.should == User.find_by_full_name(ENV['ASSETS_ADMIN'])
+      Device.import(file)
+      Device.all.first.user.should == User.find_by_full_name(ENV['ASSETS_ADMIN'])
     end
 
     it "should not try to create an entry on rows without device ids" do
-      Asset.import(@file).should be_true
+      Device.import(@file).should be_true
     end
 
     it "should find existing hardware verison" do
       hardware_version = FactoryGirl.create(:hardware_version, name: "PreDVT", project: "Tiburon")
-      Asset.import(@file)
-      Asset.all.first.hardware_version.should == hardware_version
+      Device.import(@file)
+      Device.all.first.hardware_version.should == hardware_version
     end
 
     it "should gracefully error on people with first names only" do
       errors = []
       file = Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/files/first_name_only.xlsx'), ' application/vnd.ms-excel.sheet.macroenabled.12')
-      expect { errors = Asset.import(file) }.to change(Asset, :count).by 0
+      expect { errors = Device.import(file) }.to change(Device, :count).by 0
       errors.should == ["Row 3 in AppendList sheet has error related to the Owner 'Last name can't be blank'"]
     end
 
@@ -82,36 +82,36 @@ describe Asset do
 
       it "should describe all failed database insertion attempts" do
         file = Rack::Test::UploadedFile.new(Rails.root.join('spec/fixtures/files/simple_test_no_user.xlsx'), ' application/vnd.ms-excel.sheet.macroenabled.12')
-        Asset.import(file).should == [ "Row 3 in AppendList sheet has error 'User can't be blank'" ]
+        Device.import(file).should == [ "Row 3 in AppendList sheet has error 'User can't be blank'" ]
       end
     end
 
     describe "attributes set" do
 
-      before { Asset.import(@file) }
+      before { Device.import(@file) }
 
       it "should set the user" do
         User.all.first.full_name.should == "Aron Rosenberg"
       end
 
       it "should set the serial number" do
-        Asset.all.first.serial_no.should == "DEVFDXQZTCX3NMEHFDXM"
+        Device.all.first.serial_no.should == "DEVFDXQZTCX3NMEHFDXM"
       end
 
       it "should set the mac address" do
-        Asset.all.first.mac_address.should == "D0:E7:82:EB:28:6D"
+        Device.all.first.mac_address.should == "D0:E7:82:EB:28:6D"
       end
 
       it "should set the notes" do
-        Asset.all.first.notes.should == "ALPHA GROUP"
+        Device.all.first.notes.should == "ALPHA GROUP"
       end
 
       it "should set the 'in-house' boolean" do
-        Asset.all.first.in_house.should be_true
+        Device.all.first.in_house.should be_true
       end
 
       it "should set the hardware version" do
-        Asset.all.first.hardware_version.should == HardwareVersion.all.first
+        Device.all.first.hardware_version.should == HardwareVersion.all.first
       end
     end
 
@@ -122,7 +122,7 @@ describe Asset do
       end
 
       it "should start the history when created" do
-        expect { Asset.import(@file) }.to change(PaperTrail::Version, :count).by 1
+        expect { Device.import(@file) }.to change(PaperTrail::Version, :count).by 1
       end
     end
   end
@@ -134,7 +134,7 @@ describe Asset do
     end
 
     it "should support .xlsx extensions" do
-      Asset.open_spreadsheet(@file).should be_an_instance_of(Roo::Excelx)
+      Device.open_spreadsheet(@file).should be_an_instance_of(Roo::Excelx)
     end
   end
 end

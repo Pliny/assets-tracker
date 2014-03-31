@@ -7,7 +7,7 @@ FactoryGirl.define do
 end
 
 FactoryGirl.define do
-  factory :asset do
+  factory :device do
     sequence(:serial_no) { |n| "DEVZASER#{n}"}
     ignore do
       user_args nil

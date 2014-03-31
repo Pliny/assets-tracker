@@ -7,7 +7,7 @@ class SpreadsheetsController < ApplicationController
   end
 
   def import
-    result = Asset.import(params['spreadsheet-file'])
+    result = Device.import(params['spreadsheet-file'])
     if result == true
       flash[:success] = "Successfully imported spreadsheet!"
     else
