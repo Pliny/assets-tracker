@@ -1,0 +1,19 @@
+- url = @new.present? ? assets_path : asset_path(@asset)
+= bootstrap_form_for @asset, url: url do |f|
+  - if @asset.errors.present?
+    = f.alert_message "Errors found, please fix."
+  = f.text_field :serial_no
+  = f.fields_for @asset.user do |f|
+    = f.text_field :full_name
+  .form-inline
+    = f.text_field :mac_address
+    = f.text_field :ipv4_address
+  .clearfix
+  .marginalize-top2
+  = f.text_area :notes, rows: 6
+  = f.check_box :in_house
+  - select_options =  { include_blank: @new.present? }
+  = f.collection_select(:hardware_version_id, HardwareVersion.all, :id, :display, select_options, {class: 'form-control'} )
+  .clearfix
+  = f.submit "Update", class: "marginalize-top btn btn-primary", :'data-disable-with' => "Updating..."
+

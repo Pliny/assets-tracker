@@ -42,6 +42,29 @@ class AssetsController < ApplicationController
     end
   end
 
+  def new
+    @asset = Asset.new
+    @asset.user = User.new
+    @new = params[:action]
+  end
+
+  def create
+    user = User.find_by_full_name(params[:asset][:user][:full_name].titleize) if params[:asset][:user]
+    @asset = Asset.new(allowable_asset_params)
+    @asset.user = user
+    @asset.save
+    if @asset.errors.present?
+      if @asset.user.nil?
+        @asset.user = User.new(:full_name => params[:asset][:user][:full_name])
+        @asset.user.errors[:full_name] = "User doesn't exist"
+      end
+      @new = params[:action]
+      render 'new'
+    else
+      redirect_to asset_path(@asset)
+    end
+  end
+
   private
 
   def set_page

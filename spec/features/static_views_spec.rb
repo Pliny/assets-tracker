@@ -170,5 +170,30 @@ describe "Static Views" do
       find('.size2:nth-child(2) > .panel:nth-child(2) > .panel-body').should have_content("ADDING-SOME-HISTORY")
     end
   end
+
+  describe "create a new asset" do
+
+    before do
+      integration_login
+    end
+
+    it "should show the page" do
+      visit new_asset_path
+      page.should have_selector('form')
+    end
+
+    it "should create a user" do
+      user = FactoryGirl.create(:user)
+      hardware_version = FactoryGirl.create(:hardware_version)
+      visit new_asset_path
+      fill_in "Serial Number", with: "DEV12341234"
+      fill_in "Owner", with: user.full_name
+      select hardware_version.display, from: "asset_hardware_version_id", visible: false
+
+      expect { click_on "Update" }.to change(Asset, :count).by 1
+
+      current_path.should == asset_path(Asset.all.first)
+    end
+  end
 end
 

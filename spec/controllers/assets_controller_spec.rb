@@ -150,4 +150,61 @@ describe AssetsController do
       end
     end
   end
+
+  describe "GET new" do
+
+    it { should respond_to :new }
+
+    describe "Anonymous user" do
+
+      it "should show the signin page" do
+        get :new
+        response.should redirect_to signin_path
+      end
+    end
+  end
+
+  describe "POST create" do
+
+    it { should respond_to :create }
+
+    describe "logged in user" do
+
+      before do
+        login
+      end
+
+      def create_asset
+        post :create, asset: {
+          serial_no: "DEV1234",
+          hardware_version_id: FactoryGirl.create(:hardware_version),
+          user: { full_name: FactoryGirl.create(:user).full_name }
+        }
+      end
+
+      it "should redirect to show on successful create" do
+        create_asset
+        response.should redirect_to asset_path(Asset.all.first)
+      end
+
+      it "should create an asset" do
+        expect {
+          create_asset
+        }.to change(Asset, :count).by 1
+      end
+
+      it "should redirect to new page on failure" do
+        post :create, asset: { serial_no: "DEV1234", user: { full_name: ""} }
+        response.should render_template 'new'
+      end
+    end
+
+    describe "Anonymous user" do
+
+      it "should show the signin page" do
+        post :create
+        response.should redirect_to signin_path
+      end
+    end
+  end
 end
