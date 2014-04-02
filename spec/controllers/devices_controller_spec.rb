@@ -207,4 +207,44 @@ describe DevicesController do
       end
     end
   end
+
+  describe "GET search" do
+
+    it { should respond_to :search }
+
+    describe "logged in user" do
+
+      before do
+        login
+      end
+
+      it "should show single device item if one item was found" do
+        device = FactoryGirl.create(:device, serial_no: "DEV4321")
+        get :search, asset: { search: "DEV" }
+        response.should render_template :show
+      end
+
+      it "should show all devices if many items exist" do
+        device1 = FactoryGirl.create(:device, serial_no: "DEV1234")
+        device2 = FactoryGirl.create(:device, serial_no: "DEV4321")
+        get :search, asset: { search: "DEV" }
+        response.should render_template :index
+      end
+
+      it "should render flash if no devices were found" do
+        get :search, asset: { search: "DEV" }
+        response.should render_template :index
+        controller.flash[:error].should ==  "No devices found with query string 'DEV'"
+      end
+    end
+
+    describe "Anonymous user" do
+
+      it "should show the signin page" do
+        get :search, asset: { search: "DEV" }
+        response.should redirect_to signin_path
+      end
+    end
+
+  end
 end

@@ -87,3 +87,27 @@ body {
     float: none !important;
   }
 }
+
+.navbar-input-group {
+  @media (min-width: $screen-sm) {
+    font-size: 0px; /*removes whitespace between button and input*/
+
+    input[type="text"] {
+      border-top-right-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+    .btn {
+      border-top-left-radius: 0px;
+      border-bottom-left-radius: 0px;
+      border-left: 0px;
+    }
+  }
+  @media (max-width: $screen-xs-max) {
+    margin-top:0px;
+    margin-bottom:0px;
+
+    .btn {
+      width:100%;
+    }
+  }
+}

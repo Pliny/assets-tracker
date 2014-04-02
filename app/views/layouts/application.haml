@@ -32,6 +32,12 @@
                   %li= link_to 'Device List', devices_path
                   %li= link_to 'Add New Device', new_device_path
           %ul.nav.navbar-nav.navbar-right
+            - if signed_in?
+              %li
+                = form_tag search_devices_path, method: :get, class: "navbar-form navbar-left navbar-input-group", role: :search do
+                  .form-group
+                    = text_field :asset, :search, class: "form-control", placeholder: "Search"
+                  = submit_tag "GO", class: "btn btn-default"
             %li.dropdown
               - if signed_in?
                 %a{href: '#', :'data-toggle' => "dropdown", class: "dropdown-toggle" }

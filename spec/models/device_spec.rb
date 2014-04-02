@@ -137,4 +137,24 @@ describe Device do
       Device.open_spreadsheet(@file).should be_an_instance_of(Roo::Excelx)
     end
   end
+
+  describe ".search" do
+
+    it "should return list of devices" do
+      device = FactoryGirl.create(:device, serial_no: "DEV1234")
+      result = Device.search("DEV1234").to_a
+      result.should_not be_nil
+      result.length.should == 1
+      result.should == [ device ]
+    end
+
+    it "should check for parts of the serial number" do
+      device1 = FactoryGirl.create(:device, serial_no: "DEV1234")
+      device2 = FactoryGirl.create(:device, serial_no: "4345EV533")
+      result = Device.search("EV").to_a
+      result.should_not be_nil
+      result.length.should == 2
+      result.should == [ device1, device2 ]
+    end
+  end
 end

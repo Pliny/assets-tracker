@@ -127,7 +127,7 @@ describe "Static Views" do
     it "should exist" do
       device = FactoryGirl.create(:device)
       visit edit_device_path(device)
-      find('form').should be_true
+      find('form > .form-group > #device_serial_no').should be_true
     end
 
     it "should edit the device" do
@@ -195,6 +195,38 @@ describe "Static Views" do
 
       current_path.should == device_path(Device.all.first)
       page.should have_selector('.alert-dismissable')
+    end
+  end
+
+  describe "search for a device" do
+
+    before do
+      integration_login
+    end
+
+    it "should search for a device" do
+      device = FactoryGirl.create(:device, serial_no: "DEV1234")
+      visit root_path
+      fill_in "asset_search", with: "DEV1234"
+      click_on "GO"
+      find(".panel .panel-body h3").should have_content device.serial_no
+    end
+
+    it "should display message if no devices were found" do
+      visit root_path
+      fill_in "asset_search", with: "DEV1234"
+      click_on "GO"
+      find(".alert-dismissable").should have_content "DEV1234"
+      page.should_not have_selector(".panel .panel-body h3")
+    end
+
+    it "should display all devices found" do
+      device1 = FactoryGirl.create(:device, serial_no: "BDEV1234")
+      device2 = FactoryGirl.create(:device, serial_no: "IDEV1234")
+      visit root_path
+      fill_in "asset_search", with: "DEV1234"
+      click_on "GO"
+      all(".panel .panel-body h3").size.should == 2
     end
   end
 end

@@ -67,6 +67,22 @@ class DevicesController < ApplicationController
     end
   end
 
+  def search
+
+    @devices = Device.search(params[:asset][:search]).page @page
+
+    if @devices.size == 0
+      flash.now[:error] = "No devices found with query string '#{params[:asset][:search]}'"
+      render :index
+    elsif @devices.size == 1
+      @device = @devices.first
+      @showing = params[:action]
+      render :show
+    else
+      render :index
+    end
+  end
+
   private
 
   def set_page

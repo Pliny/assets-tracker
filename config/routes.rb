@@ -11,7 +11,9 @@ AssetTracker::Application.routes.draw do
     collection { post :import }
   end
 
-  resources :devices, only: [ :index, :edit, :update, :show, :new, :create ]
+  resources :devices, only: [ :index, :edit, :update, :show, :new, :create ] do
+    collection { get :search }
+  end
 
   resources :versions, only: [ :index ]
 

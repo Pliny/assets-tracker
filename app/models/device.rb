@@ -63,6 +63,10 @@ class Device < ActiveRecord::Base
     end
   end
 
+  def self.search query
+    self.where("serial_no LIKE ?", "%#{query}%")
+  end
+
   private
 
   def self.open_spreadsheet(file)
